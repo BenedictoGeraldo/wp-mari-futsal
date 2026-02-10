@@ -60,12 +60,3 @@ themes/blocksy/
 
 # But keep our custom work
 !themes/astra*/
-!plugins/mari-futsal-booking/
-
-# Plugin specific ignores
-plugins/akismet/
-plugins/hello.php
-plugins/index.php
-
-# Keep our custom plugin
-!plugins/mari-futsal-booking/
