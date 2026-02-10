@@ -1,0 +1,71 @@
+# Mari Futsal - wp-content .gitignore
+
+# Uploads folder (user-generated content)
+uploads/*
+!uploads/.gitkeep
+
+# Cache folders
+cache/
+backup-db/
+upgrade/
+w3tc-config/
+
+# Logs
+*.log
+debug.log
+error_log
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~
+
+# Environment files
+.env
+.env.local
+
+# Node modules (if using npm in theme/plugin)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build files (if using build tools)
+*.min.js
+*.min.css
+dist/
+build/
+
+# WordPress specific
+# Keep only our custom plugin and themes, ignore default themes
+themes/twentytwenty*/
+themes/blocksy/
+
+# But keep our custom work
+!themes/astra*/
+!plugins/mari-futsal-booking/
+
+# Plugin specific ignores
+plugins/akismet/
+plugins/hello.php
+plugins/index.php
+
+# Keep our custom plugin
+!plugins/mari-futsal-booking/
