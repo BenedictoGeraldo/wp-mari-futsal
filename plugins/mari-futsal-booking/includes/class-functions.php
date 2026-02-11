@@ -220,4 +220,70 @@ class MF_Functions {
 
         return $count == 0;
     }
+
+    public static function verify_nonce($action, $nonce_field = 'mf_nonce') {
+        if(!isset($_POST[$nonce_field])) {
+            return false;
+        }
+
+        return wp_verify_nonce($_POST[$nonce_field], $action);
+    }
+
+    public static function current_user_can_manage() {
+        return current_user_can('manage_options');
+    }
+
+    public static function sanitize_text($input) {
+        return sanitize_text_field(trim($input));
+    }
+
+    public static function sanitize_number($input) {
+        return absint($input);
+    }
+
+    public static function validate_required($value) {
+        return !empty($value) && trim($value) !== '';
+    }
+
+    public static function set_flash_message($message, $type = 'success') {
+        set_transient('mf_flash_message', array(
+            'message' => $message,
+            'type' => $type
+        ), 45);
+    }
+
+    public static function get_flash_message() {
+        $flash = get_transient('mf_flash_message');
+        if($flash) {
+            delete_transient('mf_flash_message');
+            return $flash;
+        } else {
+            return false;
+        }
+    }
+
+    public static function display_flash_message() {
+        $flash = self::get_flash_message();
+        if (!$flash) {
+            return;
+        }
+
+        $class = 'notice notice-' . $flash['type'] . ' is-dismissible';
+        printf('<div class="%s"><p>%s</p></div>',
+            esc_attr($class),
+            esc_html($flash['message'])
+        );
+    }
+
+    public static function get_validation_errors() {
+        return get_transient('mf_validation_errors') ?: array();
+    }
+
+    public static function set_validation_errors($errors) {
+        set_transient('mf_validation_errors', $errors, 45);
+    }
+
+    public static function clear_validation_errors() {
+        delete_transient('mf_validation_errors');
+    }
 }
