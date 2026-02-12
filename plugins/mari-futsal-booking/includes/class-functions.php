@@ -220,12 +220,13 @@ class MF_Functions {
         return $count == 0;
     }
 
-    public static function verify_nonce($action, $nonce_field = 'mf_nonce') {
-        if(!isset($_POST[$nonce_field])) {
+    public static function verify_nonce($action, $nonce_field = '_wpnonce') {
+        if(!isset($_POST[$nonce_field]) && !isset($_GET['_wpnonce'])) {
             return false;
         }
 
-        return wp_verify_nonce($_POST[$nonce_field], $action);
+        $nonce = isset($_POST[$nonce_field]) ? $_POST[$nonce_field] : $_GET['_wpnonce'];
+        return wp_verify_nonce($nonce, $action);
     }
 
     public static function current_user_can_manage() {
@@ -268,9 +269,10 @@ class MF_Functions {
         }
 
         $class = 'notice notice-' . $flash['type'] . ' is-dismissible';
+        // Allow HTML in message for better error display
         printf('<div class="%s"><p>%s</p></div>',
             esc_attr($class),
-            esc_html($flash['message'])
+            wp_kses_post($flash['message'])
         );
     }
 
@@ -467,5 +469,205 @@ class MF_Functions {
         ));
 
         return $count > 0;
+    }
+
+    // ========================================
+    // JADWAL (SLOT WAKTU) FUNCTIONS - Day 4
+    // ========================================
+
+    /**
+     * Validate jadwal data
+     */
+    public static function validate_jadwal_data($data, $mode = 'add', $jadwal_id = null) {
+        $errors = array();
+
+        // Normalize time format (remove seconds if present, trim spaces)
+        if (isset($data['jam_mulai'])) {
+            $data['jam_mulai'] = trim($data['jam_mulai']);
+            // Convert HH:MM:SS to HH:MM
+            if (preg_match('/^(\d{2}):(\d{2}):\d{2}$/', $data['jam_mulai'], $matches)) {
+                $data['jam_mulai'] = $matches[1] . ':' . $matches[2];
+            }
+        }
+        
+        if (isset($data['jam_selesai'])) {
+            $data['jam_selesai'] = trim($data['jam_selesai']);
+            // Convert HH:MM:SS to HH:MM
+            if (preg_match('/^(\d{2}):(\d{2}):\d{2}$/', $data['jam_selesai'], $matches)) {
+                $data['jam_selesai'] = $matches[1] . ':' . $matches[2];
+            }
+        }
+
+        // Validasi jam_mulai
+        if (!self::validate_required($data['jam_mulai'])) {
+            $errors[] = 'Jam mulai wajib diisi.';
+        } elseif (!preg_match('/^([0-1][0-9]|2[0-3]):([0-5][0-9])$/', $data['jam_mulai'])) {
+            $errors[] = 'Format jam mulai tidak valid (' . htmlspecialchars($data['jam_mulai']) . '). Gunakan format HH:MM (contoh: 08:00 atau 20:30).';
+        }
+
+        // Validasi jam_selesai
+        if (!self::validate_required($data['jam_selesai'])) {
+            $errors[] = 'Jam selesai wajib diisi.';
+        } elseif (!preg_match('/^([0-1][0-9]|2[0-3]):([0-5][0-9])$/', $data['jam_selesai'])) {
+            $errors[] = 'Format jam selesai tidak valid (' . htmlspecialchars($data['jam_selesai']) . '). Gunakan format HH:MM (contoh: 09:00 atau 21:30).';
+        }
+
+        // Validasi jam_selesai > jam_mulai
+        if (empty($errors)) {
+            if (strtotime($data['jam_selesai']) <= strtotime($data['jam_mulai'])) {
+                $errors[] = 'Jam selesai (' . $data['jam_selesai'] . ') harus lebih besar dari jam mulai (' . $data['jam_mulai'] . ').';
+            }
+        }
+
+        // Validasi overlap
+        if (empty($errors)) {
+            $overlap = self::check_jadwal_overlap($data['jam_mulai'], $data['jam_selesai'], $jadwal_id);
+            if ($overlap) {
+                $errors[] = 'Slot waktu <strong>' . $data['jam_mulai'] . ' - ' . $data['jam_selesai'] . 
+                           '</strong> bertabrakan dengan slot yang sudah ada: <strong>' . 
+                           date('H:i', strtotime($overlap->jam_mulai)) . ' - ' . 
+                           date('H:i', strtotime($overlap->jam_selesai)) . '</strong>.';
+            }
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Check jadwal overlap
+     */
+    public static function check_jadwal_overlap($jam_mulai, $jam_selesai, $exclude_id = null) {
+        global $wpdb;
+        $table = $wpdb->prefix . 'futsal_jadwal';
+
+        // Normalize time format to HH:MM:SS for comparison
+        if (!preg_match('/:.*:/', $jam_mulai)) {
+            $jam_mulai .= ':00';
+        }
+        if (!preg_match('/:.*:/', $jam_selesai)) {
+            $jam_selesai .= ':00';
+        }
+
+        $sql = "SELECT * FROM $table WHERE (
+            (jam_mulai < %s AND jam_selesai > %s) OR
+            (jam_mulai < %s AND jam_selesai > %s) OR
+            (%s <= jam_mulai AND %s >= jam_selesai)
+        )";
+
+        if ($exclude_id) {
+            $sql .= $wpdb->prepare(" AND id != %d", $exclude_id);
+        }
+
+        return $wpdb->get_row($wpdb->prepare(
+            $sql,
+            $jam_selesai, $jam_mulai, // overlap start
+            $jam_selesai, $jam_selesai, // overlap end
+            $jam_mulai, $jam_selesai // contains
+        ));
+    }
+
+    /**
+     * Add jadwal
+     */
+    public static function add_jadwal($data) {
+        global $wpdb;
+        $table = $wpdb->prefix . 'futsal_jadwal';
+
+        // Normalize time format to HH:MM:SS for database
+        $jam_mulai = $data['jam_mulai'];
+        if (!preg_match('/:.*:/', $jam_mulai)) {
+            $jam_mulai .= ':00'; // Add seconds if not present
+        }
+        
+        $jam_selesai = $data['jam_selesai'];
+        if (!preg_match('/:.*:/', $jam_selesai)) {
+            $jam_selesai .= ':00'; // Add seconds if not present
+        }
+
+        $insert_data = array(
+            'jam_mulai' => $jam_mulai,
+            'jam_selesai' => $jam_selesai,
+            'created_at' => current_time('mysql')
+        );
+
+        $result = $wpdb->insert($table, $insert_data);
+
+        if ($result) {
+            return $wpdb->insert_id;
+        }
+        return false;
+    }
+
+    /**
+     * Update jadwal
+     */
+    public static function update_jadwal($id, $data) {
+        global $wpdb;
+        $table = $wpdb->prefix . 'futsal_jadwal';
+
+        // Normalize time format to HH:MM:SS for database
+        $jam_mulai = $data['jam_mulai'];
+        if (!preg_match('/:.*:/', $jam_mulai)) {
+            $jam_mulai .= ':00'; // Add seconds if not present
+        }
+        
+        $jam_selesai = $data['jam_selesai'];
+        if (!preg_match('/:.*:/', $jam_selesai)) {
+            $jam_selesai .= ':00'; // Add seconds if not present
+        }
+
+        $update_data = array(
+            'jam_mulai' => $jam_mulai,
+            'jam_selesai' => $jam_selesai
+        );
+
+        $result = $wpdb->update(
+            $table,
+            $update_data,
+            array('id' => $id),
+            array('%s', '%s'),
+            array('%d')
+        );
+
+        return $result !== false;
+    }
+
+    /**
+     * Delete jadwal
+     */
+    public static function delete_jadwal($id) {
+        global $wpdb;
+        $table = $wpdb->prefix . 'futsal_jadwal';
+
+        $result = $wpdb->delete(
+            $table,
+            array('id' => $id),
+            array('%d')
+        );
+
+        return $result !== false;
+    }
+
+    /**
+     * Get booking count by jadwal
+     */
+    public static function get_booking_count_by_jadwal($jadwal_id) {
+        global $wpdb;
+        $table = $wpdb->prefix . 'futsal_booking';
+
+        return (int) $wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*) FROM $table WHERE jadwal_id = %d",
+            $jadwal_id
+        ));
+    }
+
+    /**
+     * Calculate slot duration in minutes
+     */
+    public static function calculate_slot_duration($jam_mulai, $jam_selesai) {
+        $start = strtotime($jam_mulai);
+        $end = strtotime($jam_selesai);
+        $diff = $end - $start;
+        return round($diff / 60);
     }
 }
