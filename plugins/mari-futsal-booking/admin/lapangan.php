@@ -3,9 +3,6 @@
  * Kelola Lapangan Page - Full CRUD (Day 3)
  */
 
-// Start output buffering to prevent header errors
-ob_start();
-
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -345,7 +342,3 @@ $upload_dir = wp_upload_dir();
         <?php endif; ?>
     </div>
 </div>
-
-<?php
-// Flush output buffer
-ob_end_flush();
