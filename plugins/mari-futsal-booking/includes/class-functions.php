@@ -1,7 +1,6 @@
 <?php
-
-/** 
- * Helper FUnctions
+/**
+ * Helper Functions
  * Semua fungsi utility untuk get data, format, validasi, dll
  */
 
@@ -285,5 +284,188 @@ class MF_Functions {
 
     public static function clear_validation_errors() {
         delete_transient('mf_validation_errors');
+    }
+
+    //add lapangan function
+    public static function add_lapangan($data) {
+        global $wpdb;
+        $table = $wpdb->prefix. 'futsal_lapangan';
+
+        $insert_data = array(
+            'nama' => self::sanitize_text($data['nama']),
+            'jenis_lapangan' => self::sanitize_text($data['jenis_lapangan']),
+            'harga' => self::sanitize_number($data['harga']),
+            'status' => self::sanitize_text($data['status']),
+            'foto' => isset($data['foto']) ? self::sanitize_text($data['foto']) : null,
+            'created_at' => current_time('mysql')
+        );
+
+        $result = $wpdb->insert($table, $insert_data);
+
+        if ($result) {
+            return $wpdb->insert_id;
+        }
+        return false;
+    }
+
+    //update lapangan function
+    public static function update_lapangan($id, $data) {
+        global $wpdb;
+        $table = $wpdb->prefix . 'futsal_lapangan';
+
+        $update_data = array (
+            'nama' => self::sanitize_text($data['nama']),
+            'jenis_lapangan' => self::sanitize_text($data['jenis_lapangan']),
+            'harga' => self::sanitize_number($data['harga']),
+            'status' => self::sanitize_text($data['status'])
+        );
+
+        if (isset($data['foto']) && !empty($data['foto'])) {
+            $update_data['foto'] = self::sanitize_text($data['foto']);
+        }
+
+        $result = $wpdb->update(
+            $table,
+            $update_data,
+            array('id' => $id),
+            array('%s', '%s', '%d', '%s', '%s'),
+            array('%d')
+        );
+
+        return $result !==false;
+    }
+
+    //delete lapangan image function
+    public static function delete_lapangan_image($filename) {
+        if (empty($filename)) {
+            return false;
+        }
+
+        $upload_dir = wp_upload_dir();
+        $file_path = $upload_dir['basedir'] . '/mari-futsal/' .$filename;
+
+        if (file_exists($file_path)) {
+            return unlink($file_path);
+        }
+
+        return false;
+    }
+
+    //delete lapangan function
+    public static function delete_lapangan($id) {
+        global $wpdb;
+        $table = $wpdb->prefix . 'futsal_lapangan';
+
+        $lapangan = self::get_lapangan($id);
+
+        $result = $wpdb->delete (
+            $table,
+            array('id' => $id),
+            array('%d')
+        );
+
+        if ($result && $lapangan && !empty($lapangan->foto)) {
+            self::delete_lapangan_image($lapangan->foto);
+        }
+
+        return $result !== false;
+    }
+
+    //validate lapangan data function
+    public static function validate_lapangan_data($data, $mode = 'add') {
+        $errors = array();
+
+        if (!self::validate_required($data['nama'])) {
+            $errors[] = 'nama lapangan wajib diisi.';
+        } elseif (strlen(trim($data['nama'])) < 3) {
+            $errors[] = 'nama lapangan minimal 3 karakter.';
+        } elseif (strlen(trim($data['nama'])) > 100) {
+            $errors[] = 'nama lapangan maksimal 100 karakter.';
+        }
+
+        if (!self::validate_required($data['jenis_lapangan'])) {
+            $errors[] = 'jenis lapangan wajib diisi.';
+        } else {
+            $valid_jenis = array('Vinyl', 'Sintetis', 'Rumput');
+            if (!in_array($data['jenis_lapangan'], $valid_jenis)) {
+                $errors[] = 'jenis lapangan tidak valid.';
+            }
+        }
+
+        if (!isset($data['harga']) || $data['harga'] === '') {
+            $errors[] = 'harga wajib diisi';
+        } elseif (!is_numeric($data['harga']) || $data['harga'] < 0) {
+            $errors[] = 'harga harus berupa angka positif.';
+        } elseif ($data['harga'] > 9999999) {
+            $errors[] = 'harga maksimal 9.999.999.';
+        }
+
+        if (!self::validate_required($data['status'])) {
+            $errors[] = 'status lapangan wajib diisi.';
+        } else {
+            $valid_status = array('aktif', 'nonaktif');
+            if(!in_array($data['status'], $valid_status)) {
+                $errors[] = 'status lapangan tidak valid.';
+            }
+        }
+
+        return $errors;
+    }
+
+    //lapangan image upload function
+    public static function handle_lapangan_image_upload($file) {
+        if (!isset($file) || $file['error'] === UPLOAD_ERR_NO_FILE) {
+            return array('success' => false, 'error' => 'No file uploaded.');
+        }
+
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            return array('success' => false, 'error' => 'Upload error occurred.');
+        }
+
+        $allowed_types = array('image/jpeg', 'image/png', 'image/gif');
+        $file_type = mime_content_type($file['tmp_name']);
+
+        if (!in_array($file_type, $allowed_types)) {
+            return array('success' => false, 'error' => 'Invalid tipe file.');
+        }
+
+        $max_size = 2 * 1024 * 1024;
+        if ($file['size'] > $max_size) {
+            return array('success' => false, 'error' => 'Ukuran file maksimal 2MB.');
+        }
+
+        $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $filename = 'lapangan_' . time() . '_' . uniqid() . '.' . $extension;
+
+
+        $upload_dir = wp_upload_dir();
+        $target_dir = $upload_dir['basedir'] . '/mari-futsal/';
+        $target_file = $target_dir . $filename;
+
+        if (!file_exists($target_dir)) {
+            wp_mkdir_p($target_dir);
+        }
+
+        if (move_uploaded_file($file['tmp_name'], $target_file)) {
+            return array(
+                'success' => true,
+                'filename' => $filename,
+                'url' => $upload_dir['baseurl'] . '/mari-futsal/' . $filename
+            );
+        }
+
+        return array('success' => false, 'error' => 'Gagal mengunggah file.');
+    }
+
+    public static function check_lapangan_has_bookings($lapangan_id) {
+        global $wpdb;
+        $table = $wpdb->prefix . 'futsal_booking';
+
+        $count = $wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*) FROM $table WHERE lapangan_id = %d",
+            $lapangan_id
+        ));
+
+        return $count > 0;
     }
 }
