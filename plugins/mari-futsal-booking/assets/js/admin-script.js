@@ -188,5 +188,180 @@ jQuery(document).ready(function ($) {
     },
   );
 
+  // ========================================
+  // TOGGLE FORM ADD/EDIT LAPANGAN (Day 3)
+  // ========================================
+  $("#btn-toggle-form").on("click", function () {
+    const formContainer = $("#form-container");
+    const btn = $(this);
+
+    if (formContainer.is(":visible")) {
+      formContainer.slideUp(300);
+      btn.html(
+        '<span class="dashicons dashicons-plus-alt"></span> Tambah Lapangan',
+      );
+    } else {
+      formContainer.slideDown(300);
+      btn.html('<span class="dashicons dashicons-no-alt"></span> Tutup Form');
+      // Focus on first input
+      setTimeout(function () {
+        $("#nama").focus();
+      }, 350);
+    }
+  });
+
+  // Close form with ESC key
+  $(document).on("keyup", function (e) {
+    if (e.key === "Escape") {
+      const formContainer = $("#form-container");
+      if (formContainer.is(":visible")) {
+        formContainer.slideUp(300);
+        $("#btn-toggle-form").html(
+          '<span class="dashicons dashicons-plus-alt"></span> Tambah Lapangan',
+        );
+      }
+    }
+  });
+
+  // ========================================
+  // FORMAT HARGA REAL-TIME (Day 3)
+  // ========================================
+  $("#harga").on("input", function () {
+    const value = $(this).val();
+    const numValue = parseInt(value.replace(/\D/g, ""));
+
+    if (!isNaN(numValue)) {
+      // Format number dengan thousand separator
+      const formatted = numValue.toLocaleString("id-ID");
+      // Tampilkan preview formatted (opsional, bisa juga langsung format input)
+      // Untuk sekarang kita skip format langsung di input karena bisa mengganggu editing
+    }
+  });
+
+  // ========================================
+  // ENHANCED DELETE CONFIRMATION (Day 3)
+  // ========================================
+  $(document).on("click", ".mf-delete-btn", function (e) {
+    e.preventDefault();
+
+    const itemName = $(this).data("item-name") || "data ini";
+    const deleteUrl = $(this).attr("href");
+
+    const confirmMsg =
+      `Apakah Anda yakin ingin menghapus lapangan "${itemName}"?\n\n` +
+      "⚠️ PERINGATAN:\n" +
+      "- Data yang dihapus tidak dapat dikembalikan!\n" +
+      "- Foto lapangan akan terhapus dari server.\n" +
+      "- Jika lapangan memiliki booking aktif, penghapusan akan ditolak.\n\n" +
+      "Ketik 'HAPUS' untuk konfirmasi.";
+
+    const userInput = prompt(confirmMsg);
+
+    if (userInput === "HAPUS") {
+      // Show loading indicator
+      $("body").append(
+        '<div class="mf-loading-overlay"><div class="mf-spinner"></div><p>Menghapus data...</p></div>',
+      );
+
+      // Redirect to delete URL
+      window.location.href = deleteUrl;
+    }
+  });
+
+  // ========================================
+  // IMAGE PREVIEW ENHANCEMENT (Day 3)
+  // ========================================
+  $(document).on("change", "#foto", function (e) {
+    const file = e.target.files[0];
+    const preview = $(".mf-image-preview");
+
+    // Clear previous preview
+    preview.empty();
+
+    if (file) {
+      // Validate file type
+      const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
+      if (!validTypes.includes(file.type)) {
+        alert("❌ File harus berupa gambar (JPG, PNG, GIF)");
+        $(this).val("");
+        return;
+      }
+
+      // Validate file size (max 2MB)
+      const maxSize = 2 * 1024 * 1024; // 2MB
+      if (file.size > maxSize) {
+        const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        alert(`❌ Ukuran file terlalu besar (${sizeMB} MB).\nMaksimal 2 MB.`);
+        $(this).val("");
+        return;
+      }
+
+      // Show preview
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        preview.html(`
+          <div style="margin-top: 15px; padding: 15px; background: #f0f0f1; border-radius: 6px;">
+            <p style="margin: 0 0 10px 0; font-weight: 600;">Preview:</p>
+            <img src="${e.target.result}" 
+                 style="max-width: 300px; max-height: 300px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: block;">
+            <p style="margin: 10px 0 0 0; font-size: 12px; color: #666;">
+              <strong>Nama file:</strong> ${file.name}<br>
+              <strong>Ukuran:</strong> ${(file.size / 1024).toFixed(2)} KB
+            </p>
+          </div>
+        `);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // ========================================
+  // FORM CANCEL BUTTON (Day 3)
+  // ========================================
+  // Already handled by link, no additional JS needed
+
+  // ========================================
+  // AUTO SCROLL TO FORM IF EDIT MODE (Day 3)
+  // ========================================
+  if ($("#form-container").is(":visible")) {
+    // Edit mode detected
+    $("#btn-toggle-form").html(
+      '<span class="dashicons dashicons-no-alt"></span> Tutup Form',
+    );
+
+    $("html, body").animate(
+      {
+        scrollTop: $("#form-container").offset().top - 100,
+      },
+      500,
+    );
+  }
+
+  // ========================================
+  // PREVENT DOUBLE SUBMIT (Day 3)
+  // ========================================
+  $(".mf-form").on("submit", function () {
+    const submitBtn = $(this).find('button[type="submit"]');
+    submitBtn.prop("disabled", true);
+    submitBtn.html(
+      '<span class="dashicons dashicons-update rotating"></span> Menyimpan...',
+    );
+
+    // Add CSS for rotating animation
+    if (!$("#rotating-animation").length) {
+      $("head").append(`
+        <style id="rotating-animation">
+          .rotating {
+            animation: rotate 1s linear infinite;
+          }
+          @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+        </style>
+      `);
+    }
+  });
+
   console.e.log("admin skrip telah sukses diinisialisasi");
 });
