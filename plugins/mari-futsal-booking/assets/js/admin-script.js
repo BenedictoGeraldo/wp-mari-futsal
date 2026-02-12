@@ -363,5 +363,80 @@ jQuery(document).ready(function ($) {
     }
   });
 
-  console.e.log("admin skrip telah sukses diinisialisasi");
+  // ========================================
+  // DAY 4 - JADWAL (SLOT WAKTU) FEATURES
+  // ========================================
+
+  // Time Input Validation - Real-time feedback
+  $('input[type="time"]').on("change", function () {
+    const jamMulai = $("#jam_mulai").val();
+    const jamSelesai = $("#jam_selesai").val();
+
+    if (jamMulai && jamSelesai) {
+      const start = new Date("2000-01-01 " + jamMulai);
+      const end = new Date("2000-01-01 " + jamSelesai);
+
+      // Remove previous warnings
+      $(".time-validation-warning").remove();
+
+      if (end <= start) {
+        $("#jam_selesai").after(
+          '<span class="time-validation-warning" style="display: block; margin-top: 8px; padding: 8px 12px; color: #721c24; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px;">' +
+            "⚠️ Jam selesai harus lebih besar dari jam mulai!</span>",
+        );
+        $(this)
+          .closest("tr")
+          .find('input[type="time"]')
+          .css("border-color", "#d63638");
+      } else {
+        $(this)
+          .closest("tr")
+          .find('input[type="time"]')
+          .css("border-color", "#00a32a");
+
+        // Calculate duration
+        const duration = Math.round((end - start) / 60000);
+        $("#jam_selesai").after(
+          '<span class="time-validation-warning" style="display: block; margin-top: 8px; padding: 8px 12px; color: #155724; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px;">' +
+            "✅ Durasi: " +
+            duration +
+            " menit (" +
+            (duration / 60).toFixed(1) +
+            " jam)</span>",
+        );
+      }
+    }
+  });
+
+  // Delete confirmation for jadwal (enhanced)
+  $(document).on("click", ".button-link-delete", function (e) {
+    const confirmMsg =
+      "⚠️ KONFIRMASI PENGHAPUSAN\n\n" +
+      "Apakah Anda yakin ingin menghapus slot waktu ini?\n\n" +
+      "⚠️ PERHATIAN:\n" +
+      "• Data yang dihapus tidak dapat dikembalikan\n" +
+      "• Jika slot ini memiliki booking aktif, penghapusan akan ditolak\n\n" +
+      'Klik "OK" untuk melanjutkan atau "Batal" untuk membatalkan.';
+
+    if (!confirm(confirmMsg)) {
+      e.preventDefault();
+      return false;
+    }
+  });
+
+  // Smooth scroll to form when add/edit button clicked
+  $('a[href*="form="]').on("click", function () {
+    setTimeout(function () {
+      if ($(".mf-card").length) {
+        $("html, body").animate(
+          {
+            scrollTop: $(".mf-card").first().offset().top - 100,
+          },
+          400,
+        );
+      }
+    }, 100);
+  });
+
+  console.log("✅ Mari Futsal Admin Script initialized (Day 4 - Jadwal)");
 });
