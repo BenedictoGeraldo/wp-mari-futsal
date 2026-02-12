@@ -434,3 +434,189 @@
 .mf-text-muted {
   color: #666;
 }
+
+/* ========================================
+   DAY 3 - FORM & MODAL ENHANCEMENTS
+======================================== */
+
+/* Form Container */
+.mf-form-container {
+  border-left: 4px solid #2271b1;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form Actions */
+.mf-form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+}
+
+/* Image Preview */
+.mf-image-preview {
+  margin-top: 15px;
+}
+
+.mf-image-preview img {
+  border: 2px solid #e0e0e0;
+  transition: transform 0.3s ease;
+}
+
+.mf-image-preview img:hover {
+  transform: scale(1.05);
+  border-color: #2271b1;
+}
+
+/* File Input Styling */
+input[type="file"] {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  border: 2px dashed #c3c4c7;
+  border-radius: 6px;
+  background: #f9f9f9;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+input[type="file"]:hover {
+  border-color: #2271b1;
+  background: #f0f6fc;
+}
+
+input[type="file"]:focus {
+  outline: none;
+  border-color: #2271b1;
+  box-shadow: 0 0 0 1px #2271b1;
+}
+
+/* Table Image Thumbnail */
+.mf-table img {
+  border: 1px solid #ddd;
+  transition: all 0.3s ease;
+}
+
+.mf-table img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  position: relative;
+}
+
+/* Loading Overlay (for delete action) */
+.mf-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+}
+
+.mf-loading-overlay p {
+  color: #fff;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.mf-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Button Hover States Enhancement */
+.mf-btn-small {
+  min-width: 80px;
+  justify-content: center;
+}
+
+.page-title-action {
+  transition: all 0.2s ease;
+}
+
+.page-title-action:hover {
+  transform: translateY(-2px);
+}
+
+/* Form Required Indicator */
+.mf-form-group label .required {
+  color: #d63638;
+  font-weight: bold;
+}
+
+/* Responsive Form */
+@media screen and (max-width: 782px) {
+  .mf-form-actions {
+    flex-direction: column;
+  }
+
+  .mf-form-actions .mf-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  input[type="file"] {
+    font-size: 14px;
+  }
+}
+
+/* Success/Error Animation */
+.notice {
+  animation: slideInRight 0.4s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Table Responsive Enhancement */
+@media screen and (max-width: 1024px) {
+  .mf-table {
+    font-size: 13px;
+  }
+
+  .mf-btn-small {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .mf-btn-small .dashicons {
+    font-size: 14px;
+  }
+}
