@@ -1,0 +1,935 @@
+/**
+ * Mari Futsal Frontend Styles
+ * Responsive styles untuk user-facing pages
+ * Day 7 - Responsive Enhancement
+ */
+
+/* ========================================
+   BASE & LAYOUT
+======================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu,
+    Cantarell, "Helvetica Neue", sans-serif;
+  line-height: 1.6;
+}
+
+/* Container Utilities */
+.mf-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.mf-container-sm {
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.mf-container-md {
+  width: 100%;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Center Content */
+.mf-center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ========================================
+   PAGE: DAFTAR LAPANGAN (HOMEPAGE)
+======================================== */
+
+.mf-lapangan-page {
+  padding: 4rem 1rem;
+  min-height: 60vh;
+}
+
+.mf-lapangan-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.mf-lapangan-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.mf-lapangan-header p {
+  font-size: 1.125rem;
+  color: #6b7280;
+}
+
+/* Lapangan Grid */
+.mf-lapangan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin: 0 auto;
+}
+
+/* Lapangan Card */
+.mf-lapangan-card {
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.mf-lapangan-card:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.mf-lapangan-card-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.mf-lapangan-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mf-lapangan-card-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+}
+
+.mf-lapangan-card-body {
+  padding: 1.5rem;
+}
+
+.mf-lapangan-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.mf-lapangan-card-meta {
+  display: flex;
+  align-items: center;
+  color: #6b7280;
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.mf-lapangan-card-price {
+  margin-bottom: 1rem;
+}
+
+.mf-lapangan-card-price .price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #059669;
+}
+
+.mf-lapangan-card-price .period {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Empty State */
+.mf-empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: #eff6ff;
+  border-radius: 0.5rem;
+}
+
+/* ========================================
+   PAGE: BOOKING FORM
+======================================== */
+
+.mf-booking-page {
+  padding: 2rem 1rem;
+  min-height: 70vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mf-booking-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+/* Sidebar Lapangan Info */
+.mf-booking-sidebar {
+  position: relative;
+}
+
+.mf-booking-sidebar-card {
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.mf-booking-sidebar-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.mf-booking-sidebar-content {
+  padding: 1.5rem;
+}
+
+/* Booking Form */
+.mf-booking-form-card {
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.mf-booking-form-card h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+/* Form Group */
+.mf-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.mf-form-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.mf-form-group input,
+.mf-form-group textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.mf-form-group input:focus,
+.mf-form-group textarea:focus {
+  outline: none;
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+/* Slot Grid */
+.mf-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.mf-slot-button {
+  padding: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background: #fff;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.mf-slot-button:hover:not(.disabled) {
+  border-color: #059669;
+  background: #f0fdf4;
+}
+
+.mf-slot-button.active {
+  background: #059669;
+  border-color: #059669;
+  color: #fff;
+}
+
+.mf-slot-button.disabled {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Submit Button */
+.mf-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background: #059669;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+  text-decoration: none;
+  border: 2px solid #059669;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    transform 0.2s;
+}
+
+.mf-btn-primary svg {
+  flex-shrink: 0;
+}
+
+.mf-btn-primary:hover {
+  background: #ffffff;
+  color: #059669;
+  border: 2px solid #059669;
+  transform: translateY(-2px);
+}
+
+.mf-btn-primary:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ========================================
+   PAGE: KONFIRMASI BOOKING
+======================================== */
+
+.mf-konfirmasi-page {
+  padding: 4rem 1rem;
+  min-height: 70vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mf-konfirmasi-container {
+  width: 100%;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Success Icon */
+.mf-success-icon {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.mf-success-icon-circle {
+  display: inline-block;
+  padding: 1rem;
+  background: #d1fae5;
+  border-radius: 9999px;
+  margin-bottom: 1rem;
+}
+
+.mf-success-icon h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+}
+
+.mf-success-icon p {
+  font-size: 1.125rem;
+  color: #6b7280;
+}
+
+/* Booking Code Card */
+.mf-booking-code-card {
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.mf-booking-code-header {
+  background: linear-gradient(135deg, #059669 0%, #2563eb 100%);
+  color: #fff;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.mf-booking-code-header h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin: 0.5rem 0;
+}
+
+.mf-booking-details {
+  padding: 1.5rem;
+}
+
+.mf-detail-row {
+  display: flex;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.mf-detail-row:last-child {
+  border-bottom: none;
+}
+
+.mf-detail-label {
+  width: 35%;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.mf-detail-value {
+  width: 65%;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* Total Highlight */
+.mf-total-highlight {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dbeafe 100%);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.mf-total-highlight .label {
+  width: 35%;
+  font-weight: 600;
+  color: #374151;
+}
+
+.mf-total-highlight .value {
+  width: 65%;
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #059669;
+}
+
+/* Instructions Card */
+.mf-instructions-card {
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.mf-instructions-card h3 {
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.mf-instructions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mf-instructions-list li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  color: #374151;
+}
+
+/* Action Buttons */
+.mf-action-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.mf-action-buttons a,
+.mf-action-buttons button {
+  flex: 1;
+  min-width: 200px;
+  text-align: center;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.mf-action-buttons svg {
+  flex-shrink: 0;
+}
+
+.mf-btn-green {
+  background: #059669;
+  color: #fff;
+  border-color: #059669;
+}
+
+.mf-btn-green:hover {
+  background: #ffffff;
+  color: #059669;
+  border-color: #059669;
+  transform: translateY(-2px);
+}
+
+.mf-btn-blue {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.mf-btn-blue:hover {
+  background: #ffffff;
+  color: #2563eb;
+  border-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+/* Contact Info */
+.mf-contact-info {
+  text-align: center;
+  margin-top: 2rem;
+  color: #6b7280;
+}
+
+.mf-contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.mf-contact-links a {
+  display: flex;
+  align-items: center;
+  color: #6b7280;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.mf-contact-links a:hover {
+  color: #059669;
+}
+
+/* ========================================
+   ALERT & NOTIFICATION
+======================================== */
+
+.mf-alert {
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.mf-alert-success {
+  background: #d1fae5;
+  border-left: 4px solid #059669;
+  color: #065f46;
+}
+
+.mf-alert-error {
+  background: #fee2e2;
+  border-left: 4px solid #dc2626;
+  color: #991b1b;
+}
+
+.mf-alert-info {
+  background: #dbeafe;
+  border-left: 4px solid #2563eb;
+  color: #1e40af;
+}
+
+/* Loading State */
+.mf-loading {
+  text-align: center;
+  padding: 2rem;
+}
+
+.mf-spinner {
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+  border: 4px solid rgba(5, 150, 105, 0.2);
+  border-top-color: #059669;
+  border-radius: 50%;
+  animation: mf-spin 0.8s linear infinite;
+}
+
+@keyframes mf-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   PRINT STYLES (Konfirmasi Page)
+======================================== */
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .site-header,
+  .site-footer,
+  .mf-action-buttons,
+  .mf-contact-info {
+    display: none !important;
+  }
+
+  .mf-konfirmasi-page {
+    padding: 1rem;
+  }
+
+  .mf-booking-code-card,
+  .mf-instructions-card {
+    box-shadow: none;
+    border: 1px solid #e5e7eb;
+  }
+}
+
+/* ========================================
+   RESPONSIVE BREAKPOINTS
+======================================== */
+
+/* Tablet: 768px and up */
+@media screen and (min-width: 768px) {
+  /* Lapangan Page */
+  .mf-lapangan-page {
+    padding: 5rem 2rem;
+  }
+
+  .mf-lapangan-header h1 {
+    font-size: 3rem;
+  }
+
+  .mf-lapangan-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  /* Booking Page */
+  .mf-booking-layout {
+    grid-template-columns: 2fr 3fr;
+    gap: 2rem;
+  }
+
+  .mf-booking-sidebar-card {
+    position: sticky;
+    top: 2rem;
+  }
+
+  .mf-slot-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Konfirmasi */
+  .mf-detail-row {
+    display: flex;
+  }
+
+  .mf-detail-label {
+    width: 35%;
+  }
+
+  .mf-detail-value {
+    width: 65%;
+  }
+}
+
+/* Desktop: 1024px and up */
+@media screen and (min-width: 1024px) {
+  /* Container */
+  .mf-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  /* Lapangan Page */
+  .mf-lapangan-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .mf-lapangan-card-image {
+    height: 220px;
+  }
+
+  /* Booking Page */
+  .mf-slot-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Mobile: 640px and below */
+@media screen and (max-width: 640px) {
+  /* Global */
+  .mf-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Lapangan Page */
+  .mf-lapangan-page {
+    padding: 2rem 1rem;
+  }
+
+  .mf-lapangan-header h1 {
+    font-size: 1.875rem;
+  }
+
+  .mf-lapangan-header p {
+    font-size: 1rem;
+  }
+
+  .mf-lapangan-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  /* Booking Page */
+  .mf-booking-page {
+    padding: 1rem;
+  }
+
+  .mf-booking-sidebar-card img {
+    height: 180px;
+  }
+
+  .mf-slot-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .mf-slot-button {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  /* Konfirmasi */
+  .mf-konfirmasi-page {
+    padding: 2rem 1rem;
+  }
+
+  .mf-success-icon h1 {
+    font-size: 1.75rem;
+  }
+
+  .mf-booking-code-header h2 {
+    font-size: 1.875rem;
+  }
+
+  .mf-detail-row {
+    flex-direction: column;
+  }
+
+  .mf-detail-label,
+  .mf-detail-value {
+    width: 100%;
+  }
+
+  .mf-detail-label {
+    margin-bottom: 0.25rem;
+  }
+
+  .mf-total-highlight {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .mf-total-highlight .label,
+  .mf-total-highlight .value {
+    width: 100%;
+  }
+
+  .mf-action-buttons {
+    flex-direction: column;
+  }
+
+  .mf-action-buttons a,
+  .mf-action-buttons button {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .mf-contact-links {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+/* Extra Small: 480px and below */
+@media screen and (max-width: 480px) {
+  .mf-lapangan-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .mf-booking-code-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .mf-total-highlight .value {
+    font-size: 1.5rem;
+  }
+}
+
+/* ========================================
+   HIDE NAVIGATION MENU ITEMS
+======================================== */
+
+/* Hide Booking, Konfirmasi, Lapangan menu items */
+nav a[href*="/booking/"],
+nav a[href*="/konfirmasi/"],
+nav a[href*="/lapangan/"],
+.menu-item a[href*="/booking/"],
+.menu-item a[href*="/konfirmasi/"],
+.menu-item a[href*="/lapangan/"],
+#primary-menu a[href*="/booking/"],
+#primary-menu a[href*="/konfirmasi/"],
+#primary-menu a[href*="/lapangan/"],
+.main-header-menu a[href*="/booking/"],
+.main-header-menu a[href*="/konfirmasi/"],
+.main-header-menu a[href*="/lapangan/"] {
+  display: none !important;
+}
+
+/* Hide parent menu items */
+nav li:has(a[href*="/booking/"]),
+nav li:has(a[href*="/konfirmasi/"]),
+nav li:has(a[href*="/lapangan/"]),
+.menu-item:has(a[href*="/booking/"]),
+.menu-item:has(a[href*="/konfirmasi/"]),
+.menu-item:has(a[href*="/lapangan/"]),
+#primary-menu li:has(a[href*="/booking/"]),
+#primary-menu li:has(a[href*="/konfirmasi/"]),
+#primary-menu li:has(a[href*="/lapangan/"]) {
+  display: none !important;
+}
+
+/* ========================================
+   FORCE CENTER ALIGNMENT
+======================================== */
+
+/* Override Astra theme containers for booking & konfirmasi pages */
+body.page-template-page-booking .site-content,
+body.page-template-page-booking .site-content > .ast-container,
+body.page-template-page-booking .entry-content,
+body.page-template-page-konfirmasi .site-content,
+body.page-template-page-konfirmasi .site-content > .ast-container,
+body.page-template-page-konfirmasi .entry-content {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* Force booking page centering */
+.mf-booking-page {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  width: 100% !important;
+}
+
+.mf-booking-page .mf-container-md {
+  width: 100% !important;
+  max-width: 1000px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Force konfirmasi page centering */
+.mf-konfirmasi-page {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  width: 100% !important;
+}
+
+.mf-konfirmasi-page .mf-konfirmasi-container {
+  width: 100% !important;
+  max-width: 700px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* ========================================
+   HIDE SCROLL TO TOP BUTTON
+======================================== */
+
+/* Hide all scroll to top buttons from Astra theme */
+.scroll-to-top,
+#scroll-to-top,
+.ast-scroll-to-top,
+.scroll-top,
+#scroll-top,
+.back-to-top,
+#back-to-top,
+[class*="scroll-to-top"],
+[class*="back-to-top"],
+[id*="scroll-to-top"],
+[id*="back-to-top"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
