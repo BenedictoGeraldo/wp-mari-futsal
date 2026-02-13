@@ -10,22 +10,18 @@ get_header();
 $lapangan_list = mf_get_all_lapangan_aktif();
 ?>
 
-<div class="wp-site-blocks">
-    <div class="wp-block-group" style="padding: 4rem 1rem; max-width: 1200px; margin: 0 auto;">
+<div class="mf-lapangan-page">
+    <div class="mf-container">
         
         <!-- Header Section -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-gray-900 mb-4">
-                Pilih Lapangan Futsal
-            </h1>
-            <p class="text-lg text-gray-600">
-                Tersedia <?php echo count($lapangan_list); ?> lapangan berkualitas untuk kebutuhan futsal Anda
-            </p>
+        <div class="mf-lapangan-header">
+            <h1>Pilih Lapangan Futsal</h1>
+            <p>Tersedia <?php echo count($lapangan_list); ?> lapangan berkualitas untuk kebutuhan futsal Anda</p>
         </div>
 
         <?php if (empty($lapangan_list)) : ?>
             <!-- Empty State -->
-            <div class="text-center py-12 bg-blue-50 rounded-lg">
+            <div class="mf-empty-state">
                 <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
@@ -35,7 +31,7 @@ $lapangan_list = mf_get_all_lapangan_aktif();
         <?php else : ?>
             
             <!-- Lapangan Grid -->
-            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div class="mf-lapangan-grid">
                 <?php foreach ($lapangan_list as $lapangan) : 
                     if (!empty($lapangan->foto)) {
                         $upload_dir = wp_upload_dir();
@@ -44,16 +40,15 @@ $lapangan_list = mf_get_all_lapangan_aktif();
                         $foto_url = 'https://via.placeholder.com/400x300?text=Lapangan+Futsal';
                     }
                 ?>
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <div class="mf-lapangan-card">
                         <!-- Foto Lapangan -->
-                        <div class="relative h-48 overflow-hidden">
+                        <div class="mf-lapangan-card-image">
                             <img 
                                 src="<?php echo esc_url($foto_url); ?>" 
                                 alt="<?php echo esc_attr($lapangan->nama); ?>"
-                                class="w-full h-full object-cover"
                             >
                             <!-- Badge Status -->
-                            <div class="absolute top-3 right-3">
+                            <div class="mf-lapangan-card-badge">
                                 <span class="inline-flex px-3 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded-full">
                                     ✓ Tersedia
                                 </span>
@@ -61,30 +56,30 @@ $lapangan_list = mf_get_all_lapangan_aktif();
                         </div>
 
                         <!-- Card Body -->
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">
+                        <div class="mf-lapangan-card-body">
+                            <h3 class="mf-lapangan-card-title">
                                 <?php echo esc_html($lapangan->nama); ?>
                             </h3>
                             
-                            <div class="flex items-center text-gray-600 mb-3">
+                            <div class="mf-lapangan-card-meta">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
                                 </svg>
-                                <span class="text-sm"><?php echo esc_html($lapangan->jenis_lapangan); ?></span>
+                                <span><?php echo esc_html($lapangan->jenis_lapangan); ?></span>
                             </div>
 
                             <!-- Harga -->
-                            <div class="mb-4">
-                                <div class="text-3xl font-bold text-green-600">
+                            <div class="mf-lapangan-card-price">
+                                <div class="price">
                                     <?php echo mf_format_rupiah($lapangan->harga); ?>
                                 </div>
-                                <div class="text-sm text-gray-600">per jam</div>
+                                <div class="period">per jam</div>
                             </div>
 
                             <!-- Tombol Booking -->
                             <a 
                                 href="<?php echo esc_url(add_query_arg('lapangan_id', $lapangan->id, home_url('/booking/'))); ?>" 
-                                class="block w-full text-center bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200"
+                                class="mf-btn-primary"
                             >
                                 <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
