@@ -94,12 +94,12 @@ $bookings_today = MF_Functions::get_bookings_by_date($today);
     </div>
     
     <!-- Quick Actions -->
-    <div class="mf-card">
+    <div class="mf-card" style="display:flex; flex-direction:column; justify-content:center; align-items: center;">
         <h2 style="margin-top: 0;">
             <span class="dashicons dashicons-admin-tools"></span>
             Quick Actions
         </h2>
-        <div class="mf-quick-actions">
+        <div class="mf-quick-actions" style="display: flex;">
             <a href="<?php echo admin_url('admin.php?page=mari-futsal-lapangan'); ?>" class="mf-btn mf-btn-primary">
                 <span class="dashicons dashicons-plus-alt"></span>
                 Kelola Lapangan
@@ -114,89 +114,4 @@ $bookings_today = MF_Functions::get_bookings_by_date($today);
             </a>
         </div>
     </div>
-    
-    <!-- Today's Bookings -->
-    <div class="mf-card">
-        <h2 style="margin-top: 0;">
-            <span class="dashicons dashicons-calendar"></span>
-            Booking Hari Ini (<?php echo MF_Functions::format_date($today); ?>)
-        </h2>
-        
-        <?php if (empty($bookings_today)): ?>
-            <div class="mf-empty-state">
-                <span class="dashicons dashicons-calendar-alt" style="font-size: 48px; color: #ddd;"></span>
-                <p>Belum ada booking untuk hari ini.</p>
-                <p><small>Booking baru akan muncul di sini.</small></p>
-            </div>
-        <?php else: ?>
-            <div class="mf-table-wrapper">
-                <table class="wp-list-table widefat fixed striped mf-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 15%;">Kode Booking</th>
-                            <th style="width: 20%;">Lapangan</th>
-                            <th style="width: 15%;">Jam</th>
-                            <th style="width: 20%;">Nama Customer</th>
-                            <th style="width: 15%;">No HP</th>
-                            <th style="width: 15%;">Total Harga</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($bookings_today as $booking): ?>
-                        <tr>
-                            <td><strong><?php echo esc_html($booking->kode_booking); ?></strong></td>
-                            <td><?php echo esc_html($booking->nama_lapangan); ?></td>
-                            <td>
-                                <span class="dashicons dashicons-clock" style="font-size: 14px;"></span>
-                                <?php echo MF_Functions::format_time($booking->jam_mulai) . ' - ' . MF_Functions::format_time($booking->jam_selesai); ?>
-                            </td>
-                            <td><?php echo esc_html($booking->nama); ?></td>
-                            <td><?php echo esc_html($booking->no_hp); ?></td>
-                            <td><strong><?php echo MF_Functions::format_rupiah($booking->total_harga); ?></strong></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        <?php endif; ?>
-    </div>
-    
-    <!-- Recent Bookings -->
-    <?php if (!empty($recent_bookings)): ?>
-    <div class="mf-card">
-        <h2 style="margin-top: 0;">
-            <span class="dashicons dashicons-backup"></span>
-            Recent Activities (10 Booking Terakhir)
-        </h2>
-        
-        <div class="mf-table-wrapper">
-            <table class="wp-list-table widefat fixed striped mf-table">
-                <thead>
-                    <tr>
-                        <th style="width: 12%;">Kode</th>
-                        <th style="width: 15%;">Tanggal</th>
-                        <th style="width: 18%;">Lapangan</th>
-                        <th style="width: 12%;">Jam</th>
-                        <th style="width: 18%;">Customer</th>
-                        <th style="width: 12%;">No HP</th>
-                        <th style="width: 13%;">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($recent_bookings as $booking): ?>
-                    <tr>
-                        <td><code><?php echo esc_html($booking->kode_booking); ?></code></td>
-                        <td><?php echo MF_Functions::format_date($booking->tanggal); ?></td>
-                        <td><?php echo esc_html($booking->nama_lapangan); ?></td>
-                        <td><?php echo MF_Functions::format_time($booking->jam_mulai) . ' - ' . MF_Functions::format_time($booking->jam_selesai); ?></td>
-                        <td><?php echo esc_html($booking->nama); ?></td>
-                        <td><?php echo esc_html($booking->no_hp); ?></td>
-                        <td><strong><?php echo MF_Functions::format_rupiah($booking->total_harga); ?></strong></td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <?php endif; ?>
 </div>
