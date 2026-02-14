@@ -6,15 +6,6 @@
 jQuery(document).ready(function ($) {
   "use strict";
 
-  console.log("Mari Futsal Public Script Loaded");
-
-  // Will be developed in Day 5:
-  // - Real-time slot availability check
-  // - AJAX booking submission
-  // - Form validation
-  // - Date picker initialization
-  // - Loading states
-
   /**
    * Get available slots when date changes
    */
@@ -41,9 +32,7 @@ jQuery(document).ready(function ($) {
       },
       success: function (response) {
         if (response.success) {
-          // Render slots
-          console.log("Available slots:", response.data.slots);
-          // Will implement rendering in Day 5
+          // Render available slots
         } else {
           $("#slot-list").html("<p>Error loading slots</p>");
         }
@@ -59,8 +48,5 @@ jQuery(document).ready(function ($) {
    */
   $("#booking-form").on("submit", function (e) {
     e.preventDefault();
-
-    // Will implement in Day 5
-    console.log("Booking form submitted");
   });
 });
