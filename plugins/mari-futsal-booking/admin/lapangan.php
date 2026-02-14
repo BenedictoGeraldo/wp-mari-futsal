@@ -1,6 +1,6 @@
 <?php
 /**
- * Kelola Lapangan Page - Full CRUD (Day 3)
+ * Kelola Lapangan Page - CRUD Management
  */
 
 if (!defined('ABSPATH')) {
@@ -295,18 +295,18 @@ $upload_dir = wp_upload_dir();
                 <tbody>
                     <?php foreach ($lapangan_list as $lap): ?>
                     <tr>
-                        <td><?php echo $lap->id; ?></td>
-                        <td><strong><?php echo esc_html($lap->nama); ?></strong></td>
-                        <td><?php echo esc_html($lap->jenis_lapangan); ?></td>
-                        <td><strong><?php echo MF_Functions::format_rupiah($lap->harga); ?></strong></td>
-                        <td>
+                        <td data-label="ID"><?php echo $lap->id; ?></td>
+                        <td data-label="Nama Lapangan"><strong><?php echo esc_html($lap->nama); ?></strong></td>
+                        <td data-label="Jenis"><?php echo esc_html($lap->jenis_lapangan); ?></td>
+                        <td data-label="Harga / Jam"><strong><?php echo MF_Functions::format_rupiah($lap->harga); ?></strong></td>
+                        <td data-label="Status">
                             <?php if ($lap->status === 'aktif'): ?>
                                 <span class="mf-badge mf-badge-success">Aktif</span>
                             <?php else: ?>
                                 <span class="mf-badge mf-badge-danger">Nonaktif</span>
                             <?php endif; ?>
                         </td>
-                        <td>
+                        <td data-label="Foto">
                             <?php if (!empty($lap->foto)): ?>
                                 <img src="<?php echo $upload_dir['baseurl'] . '/mari-futsal/' . $lap->foto; ?>" 
                                      style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; cursor: pointer;"
@@ -315,7 +315,7 @@ $upload_dir = wp_upload_dir();
                                 <span style="color: #999;">No image</span>
                             <?php endif; ?>
                         </td>
-                        <td>
+                        <td data-label="Actions">
                             <a href="<?php echo admin_url('admin.php?page=mari-futsal-lapangan&edit=1&id=' . $lap->id); ?>" 
                                class="mf-btn mf-btn-small mf-btn-primary">
                                 <span class="dashicons dashicons-edit"></span>
