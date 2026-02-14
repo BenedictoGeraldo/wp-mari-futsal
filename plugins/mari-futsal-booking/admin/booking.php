@@ -1,7 +1,7 @@
 <?php
 /**
  * Kelola Booking Page
- * List semua booking dengan filter (enhanced - Day 2)
+ * List semua booking dengan filter
  */
 
 if (!defined('ABSPATH')) {
@@ -82,28 +82,35 @@ $all_lapangan = $wpdb-> get_results("SELECT id, nama FROM $lapangan_table ORDER 
 ?>
 
 <div class="wrap">
-    <h1 class="wp-heading-inline">Kelola Booking</h1>
+    <h1 class="wp-heading-inline">
+        <span class="dashicons dashicons-list-view"></span>
+        Kelola Booking
+    </h1>
     <hr class="wp-header-end">
 
-    <!-- Filter Section -->
-    <div class="tablenav top">
-        <form method="get" action="">
+    <!-- Filter Card -->
+    <div class="mf-card">
+        <h3>
+            <span class="dashicons dashicons-filter"></span>
+            Filter Booking
+        </h3>
+        <form method="get" action="" class="mf-filter-form">
             <input type="hidden" name="page" value="mari-futsal-booking">
             
-            <div style="display: flex; gap: 10px; align-items: center; margin: 15px 0;">
-                <div>
-                    <label>Dari Tanggal:</label>
-                    <input type="date" name="tanggal_dari" value="<?php echo esc_attr($filter_tanggal_dari); ?>" class="regular-text">
+            <div class="mf-filter-group">
+                <div class="mf-form-group">
+                    <label for="tanggal_dari">Dari Tanggal:</label>
+                    <input type="date" id="tanggal_dari" name="tanggal_dari" value="<?php echo esc_attr($filter_tanggal_dari); ?>">
                 </div>
                 
-                <div>
-                    <label>Sampai Tanggal:</label>
-                    <input type="date" name="tanggal_sampai" value="<?php echo esc_attr($filter_tanggal_sampai); ?>" class="regular-text">
+                <div class="mf-form-group">
+                    <label for="tanggal_sampai">Sampai Tanggal:</label>
+                    <input type="date" id="tanggal_sampai" name="tanggal_sampai" value="<?php echo esc_attr($filter_tanggal_sampai); ?>">
                 </div>
                 
-                <div>
-                    <label>Lapangan:</label>
-                    <select name="lapangan_id">
+                <div class="mf-form-group">
+                    <label for="lapangan_id">Lapangan:</label>
+                    <select id="lapangan_id" name="lapangan_id">
                         <option value="0">Semua Lapangan</option>
                         <?php foreach ($all_lapangan as $lap) : ?>
                             <option value="<?php echo $lap->id; ?>" <?php selected($filter_lapangan, $lap->id); ?>>
@@ -113,111 +120,140 @@ $all_lapangan = $wpdb-> get_results("SELECT id, nama FROM $lapangan_table ORDER 
                     </select>
                 </div>
                 
-                <div>
-                    <button type="submit" class="button button-primary">Filter</button>
-                    <a href="?page=mari-futsal-booking" class="button">Reset</a>
+                <div class="mf-form-group mf-filter-actions">
+                    <label>&nbsp;</label>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit" class="mf-btn mf-btn-primary">
+                            <span class="dashicons dashicons-search"></span>
+                            Filter
+                        </button>
+                        <a href="?page=mari-futsal-booking" class="mf-btn mf-btn-secondary">
+                            <span class="dashicons dashicons-image-rotate"></span>
+                            Reset
+                        </a>
+                    </div>
                 </div>
             </div>
         </form>
     </div>
 
-    <!-- Results Count -->
-    <p class="search-box">
-        <strong>Total: <?php echo number_format($total_items); ?> booking ditemukan</strong>
-    </p>
-
-    <!-- Table -->
-    <table class="wp-list-table widefat fixed striped">
-        <thead>
-            <tr>
-                <th width="10%">Kode Booking</th>
-                <th width="12%">Tanggal</th>
-                <th width="15%">Lapangan</th>
-                <th width="10%">Jam</th>
-                <th width="15%">Nama Customer</th>
-                <th width="12%">No HP</th>
-                <th width="10%">Total Harga</th>
-                <th width="12%">Dibuat</th>
-                <th width="8%">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (empty($bookings)) : ?>
+    <!-- Table Card -->
+    <div class="mf-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3 style="margin: 0;">
+                <span class="dashicons dashicons-tickets-alt"></span>
+                Data Booking
+            </h3>
+            <div style="color: #666;">
+                <strong><?php echo number_format($total_items); ?></strong> booking ditemukan
+            </div>
+        </div>
+        
+        <?php if ($bookings): ?>
+        <div class="mf-table-wrapper">
+            <table class="wp-list-table widefat fixed striped mf-table">
+            <thead>
                 <tr>
-                    <td colspan="9" style="text-align: center; padding: 30px;">
-                        <strong>Tidak ada booking ditemukan.</strong>
-                        <br>
-                        <?php if (!empty($filter_tanggal_dari) || !empty($filter_tanggal_sampai) || $filter_lapangan > 0) : ?>
-                            <a href="?page=mari-futsal-booking" class="button" style="margin-top: 10px;">Reset Filter</a>
-                        <?php endif; ?>
-                    </td>
+                    <th style="width: 10%;">Kode Booking</th>
+                    <th style="width: 10%;">Tanggal</th>
+                    <th style="width: 15%;">Lapangan</th>
+                    <th style="width: 10%;">Jam</th>
+                    <th style="width: 15%;">Nama Customer</th>
+                    <th style="width: 12%;">No HP</th>
+                    <th style="width: 12%;">Total Harga</th>
+                    <th style="width: 10%;">Dibuat</th>
+                    <th style="width: 10%;">Actions</th>
                 </tr>
-            <?php else : ?>
+            </thead>
+            <tbody>
                 <?php foreach ($bookings as $booking) : 
                     $tanggal_formatted = date('d M Y', strtotime($booking->tanggal));
                     $created_formatted = date('d M Y H:i', strtotime($booking->created_at));
                 ?>
                     <tr>
-                        <td><strong><?php echo esc_html($booking->kode_booking); ?></strong></td>
-                        <td><?php echo $tanggal_formatted; ?></td>
-                        <td>
+                        <td data-label="Kode Booking">
+                            <code><?php echo esc_html($booking->kode_booking); ?></code>
+                        </td>
+                        <td data-label="Tanggal"><?php echo $tanggal_formatted; ?></td>
+                        <td data-label="Lapangan">
                             <strong><?php echo esc_html($booking->lapangan_nama); ?></strong>
                             <br>
-                            <small><?php echo esc_html($booking->jenis_lapangan); ?></small>
+                            <small style="color: #666;"><?php echo esc_html($booking->jenis_lapangan); ?></small>
                         </td>
-                        <td>
+                        <td data-label="Jam">
+                            <span class="dashicons dashicons-clock" style="color: #2271b1; font-size: 14px;"></span>
                             <?php echo date('H:i', strtotime($booking->jam_mulai)); ?> - 
                             <?php echo date('H:i', strtotime($booking->jam_selesai)); ?>
                         </td>
-                        <td><?php echo esc_html($booking->nama); ?></td>
-                        <td><?php echo esc_html($booking->no_hp); ?></td>
-                        <td><strong>Rp <?php echo number_format($booking->total_harga, 0, ',', '.'); ?></strong></td>
-                        <td><small><?php echo $created_formatted; ?></small></td>
-                        <td>
-                            <a href="?page=mari-futsal-booking&action=view&id=<?php echo $booking->id; ?>" class="button button-small">
+                        <td data-label="Nama Customer"><?php echo esc_html($booking->nama); ?></td>
+                        <td data-label="No HP"><?php echo esc_html($booking->no_hp); ?></td>
+                        <td data-label="Total Harga"><strong>Rp <?php echo number_format($booking->total_harga, 0, ',', '.'); ?></strong></td>
+                        <td data-label="Dibuat"><small style="color: #666;"><?php echo $created_formatted; ?></small></td>
+                        <td data-label="Actions">
+                            <a href="?page=mari-futsal-booking&action=view&id=<?php echo $booking->id; ?>" class="mf-btn mf-btn-small mf-btn-primary">
+                                <span class="dashicons dashicons-visibility"></span>
                                 View
                             </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
+            </tbody>
+        </table>
+        </div>
+        <?php else: ?>
+        <div class="mf-empty-state">
+            <span class="dashicons dashicons-tickets-alt" style="font-size: 64px; opacity: 0.3;"></span>
+            <h3>Tidak ada booking ditemukan</h3>
+            <?php if (!empty($filter_tanggal_dari) || !empty($filter_tanggal_sampai) || $filter_lapangan > 0) : ?>
+                <p>Coba ubah filter atau klik tombol Reset untuk melihat semua booking.</p>
+                <a href="?page=mari-futsal-booking" class="mf-btn mf-btn-secondary">
+                    <span class="dashicons dashicons-image-rotate"></span>
+                    Reset Filter
+                </a>
+            <?php else: ?>
+                <p>Belum ada booking yang tersedia.</p>
             <?php endif; ?>
-        </tbody>
-    </table>
+        </div>
+        <?php endif; ?>
+    </div>
 
     <!-- Pagination -->
     <?php if ($total_pages > 1) : ?>
-        <div class="tablenav bottom">
-            <div class="tablenav-pages">
-                <span class="displaying-num"><?php echo number_format($total_items); ?> items</span>
-                <span class="pagination-links">
-                    <?php
-                    $base_url = add_query_arg(array(
-                        'page' => 'mari-futsal-booking',
-                        'tanggal_dari' => $filter_tanggal_dari,
-                        'tanggal_sampai' => $filter_tanggal_sampai,
-                        'lapangan_id' => $filter_lapangan
-                    ), admin_url('admin.php'));
-                    
-                    // Previous
-                    if ($current_page > 1) {
-                        echo '<a class="prev-page button" href="' . esc_url(add_query_arg('paged', $current_page - 1, $base_url)) . '">‹</a> ';
-                    } else {
-                        echo '<span class="tablenav-pages-navspan button disabled">‹</span> ';
-                    }
-                    
-                    // Page numbers
-                    echo '<span class="paging-input">';
-                    echo '<span class="tablenav-paging-text">' . $current_page . ' of ' . $total_pages . '</span>';
-                    echo '</span> ';
-                    
-                    // Next
-                    if ($current_page < $total_pages) {
-                        echo '<a class="next-page button" href="' . esc_url(add_query_arg('paged', $current_page + 1, $base_url)) . '">›</a>';
-                    } else {
-                        echo '<span class="tablenav-pages-navspan button disabled">›</span>';
-                    }
-                    ?>
-                </span>
+        <div class="mf-card" style="padding: 15px;">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 15px;">
+                <?php
+                $base_url = add_query_arg(array(
+                    'page' => 'mari-futsal-booking',
+                    'tanggal_dari' => $filter_tanggal_dari,
+                    'tanggal_sampai' => $filter_tanggal_sampai,
+                    'lapangan_id' => $filter_lapangan
+                ), admin_url('admin.php'));
+                
+                // Previous
+                if ($current_page > 1) {
+                    echo '<a class="mf-btn mf-btn-secondary mf-btn-small" href="' . esc_url(add_query_arg('paged', $current_page - 1, $base_url)) . '">
+                        <span class="dashicons dashicons-arrow-left-alt2"></span> Prev
+                    </a>';
+                } else {
+                    echo '<span class="mf-btn mf-btn-secondary mf-btn-small mf-btn-disabled">
+                        <span class="dashicons dashicons-arrow-left-alt2"></span> Prev
+                    </span>';
+                }
+                
+                // Page numbers
+                echo '<span style="color: #666; font-weight: 600;">Halaman ' . $current_page . ' dari ' . $total_pages . '</span>';
+                
+                // Next
+                if ($current_page < $total_pages) {
+                    echo '<a class="mf-btn mf-btn-secondary mf-btn-small" href="' . esc_url(add_query_arg('paged', $current_page + 1, $base_url)) . '">
+                        Next <span class="dashicons dashicons-arrow-right-alt2"></span>
+                    </a>';
+                } else {
+                    echo '<span class="mf-btn mf-btn-secondary mf-btn-small mf-btn-disabled">
+                        Next <span class="dashicons dashicons-arrow-right-alt2"></span>
+                    </span>';
+                }
+                ?>
             </div>
         </div>
     <?php endif; ?>
@@ -225,7 +261,70 @@ $all_lapangan = $wpdb-> get_results("SELECT id, nama FROM $lapangan_table ORDER 
 </div>
 
 <style>
-.wp-list-table td {
-    vertical-align: middle;
+/* Filter Form Styles */
+.mf-filter-form {
+    margin-top: 15px;
+}
+
+.mf-filter-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    align-items: end;
+}
+
+.mf-filter-actions {
+    display: flex;
+    align-items: flex-end;
+}
+
+/* Table Actions Cell Styling */
+.mf-table td[data-label="Actions"] {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    text-align: center;
+}
+
+.mf-table td[data-label="Actions"] .mf-btn {
+    display: inline-flex !important;
+    width: auto !important;
+    min-width: auto !important;
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 782px) {
+    .mf-filter-group {
+        grid-template-columns: 1fr;
+    }
+    
+    .mf-filter-actions > div {
+        flex-direction: row;
+        width: 100%;
+        gap: 8px;
+    }
+    
+    .mf-filter-actions .mf-btn {
+        width: auto;
+        flex: 1;
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+    
+    /* Override table button untuk Actions column */
+    #wpwrap .mf-table td[data-label="Actions"] {
+        padding: 15px !important;
+        text-align: center !important;
+    }
+    
+    #wpwrap .mf-table td[data-label="Actions"] .mf-btn,
+    #wpwrap .mf-table td[data-label="Actions"] .mf-btn-small {
+        display: inline-flex !important;
+        width: auto !important;
+        min-width: auto !important;
+        max-width: none !important;
+        margin: 0 auto !important;
+        font-size: 11px !important;
+        padding: 6px 10px !important;
+    }
 }
 </style>
