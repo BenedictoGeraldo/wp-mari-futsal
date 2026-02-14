@@ -1,6 +1,6 @@
 <?php
 /**
- * Dashboard Page - Enhanced Version (Day 2)
+ * Dashboard Page - Admin Overview
  */
 
 if (!defined('ABSPATH')) {
@@ -33,17 +33,9 @@ $bookings_today = MF_Functions::get_bookings_by_date($today);
     <div class="mf-card mf-welcome-card">
         <h2>👋 Selamat Datang di Mari Futsal Booking System!</h2>
         <p style="font-size: 15px; line-height: 1.6;">
-            Dashboard ini menampilkan statistik dan data booking secara real-time.
+            Dashboard ini menampilkan statistik dan data booking secara real-time. 
+            Kelola lapangan, jadwal, dan booking pelanggan Anda dengan mudah.
         </p>
-        
-        <div style="background: #f0f6fc; padding: 15px; border-radius: 4px; margin-top: 15px; border-left: 4px solid #0071a1; color: #000;">
-            <h3 style="margin: 0 0 10px 0; color: #000;">📊 Status Development</h3>
-            <ul style="margin: 0; line-height: 2;">
-                <li>✅ <strong>Day 1:</strong> Database, Plugin Structure, Admin Menu</li>
-                <li>🔄 <strong>Day 2:</strong> Enhanced Dashboard, Security, UI Improvements</li>
-                <li>⏳ <strong>Next:</strong> CRUD Lapangan (Day 3), Master Jadwal (Day 4)</li>
-            </ul>
-        </div>
     </div>
     
     <!-- Statistics Cards -->
