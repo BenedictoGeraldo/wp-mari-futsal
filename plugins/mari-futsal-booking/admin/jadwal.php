@@ -1,6 +1,6 @@
 <?php
 /**
- * Kelola Jadwal Page - Full CRUD (Day 4)
+ * Kelola Jadwal Page
  * Master slot waktu dengan fitur Add, Edit, Delete
  */
 
@@ -147,7 +147,7 @@ if ($action === 'edit' && isset($_GET['id'])) {
     
     <?php if ($action === 'add' || $action === 'edit'): ?>
         <!-- FORM ADD/EDIT -->
-        <div class="mf-card" style="max-width: 600px;">
+        <div class="mf-card" style="max-width: 600px; ">
             <h2><?php echo $action === 'add' ? '➕ Tambah Slot Waktu Baru' : '✏️ Edit Slot Waktu'; ?></h2>
             
             <form method="post" action="" class="mf-form">
@@ -206,16 +206,6 @@ if ($action === 'edit' && isset($_GET['id'])) {
     <?php else: ?>
         <!-- LIST JADWAL -->
         <div class="mf-card">
-            <div style="background: #d4edda; padding: 15px; border-radius: 4px; border-left: 4px solid #28a745; margin-bottom: 20px;">
-                <h3 style="margin: 0 0 10px 0; color: #155724;">
-                    <span class="dashicons dashicons-yes-alt"></span>
-                    Day 4 - CRUD Jadwal Complete!
-                </h3>
-                <p style="margin: 0; color: #155724;">
-                    ✅ Tambah slot waktu | ✅ Edit slot | ✅ Hapus slot (with validation)
-                </p>
-            </div>
-            
             <h3>📋 Slot Waktu Tersedia (<?php echo count($jadwal_list); ?> Slot)</h3>
             
             <?php if ($jadwal_list): ?>
@@ -235,21 +225,21 @@ if ($action === 'edit' && isset($_GET['id'])) {
                             $durasi = MF_Functions::calculate_slot_duration($jadwal->jam_mulai, $jadwal->jam_selesai);
                         ?>
                         <tr>
-                            <td><strong>#<?php echo $jadwal->id; ?></strong></td>
-                            <td>
+                            <td data-label="ID"><strong>#<?php echo $jadwal->id; ?></strong></td>
+                            <td data-label="Jam Mulai">
                                 <span class="dashicons dashicons-clock" style="color: #0071a1;"></span>
                                 <?php echo date('H:i', strtotime($jadwal->jam_mulai)); ?>
                             </td>
-                            <td>
+                            <td data-label="Jam Selesai">
                                 <span class="dashicons dashicons-clock" style="color: #dc3545;"></span>
                                 <?php echo date('H:i', strtotime($jadwal->jam_selesai)); ?>
                             </td>
-                            <td>
+                            <td data-label="Durasi">
                                 <span class="mf-badge" style="background: #10b981; color: #fff;">
                                     <?php echo $durasi; ?> menit
                                 </span>
                             </td>
-                            <td>
+                            <td data-label="Actions">
                                 <a 
                                     href="?page=mari-futsal-jadwal&form=edit&id=<?php echo $jadwal->id; ?>" 
                                     class="button button-small"
