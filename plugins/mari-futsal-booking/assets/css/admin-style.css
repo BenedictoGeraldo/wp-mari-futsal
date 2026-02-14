@@ -1,4 +1,4 @@
-/* Admin Styles - Day 2 Enhanced */
+/* Admin Styles - Mari Futsal Booking System */
 
 /* Layout */
 .mf-dashboard {
@@ -128,9 +128,10 @@
   padding: 10px 18px;
   background: #2271b1;
   color: #fff;
-  text-decoration: none;
+  text-decoration: none !important;
   border-radius: 5px;
   border: none;
+  outline: none;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
@@ -142,18 +143,25 @@
 .mf-btn:focus {
   background: #135e96;
   color: #fff;
+  text-decoration: none !important;
+  outline: none;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .mf-btn:active {
   transform: translateY(0);
+  outline: none;
 }
 
 .mf-btn .dashicons {
   font-size: 16px;
   width: 16px;
   height: 16px;
+  line-height: 16px;
+  margin: 0;
+  vertical-align: middle;
+  align-self: center;
 }
 
 /* Button Variants */
@@ -161,16 +169,20 @@
   background: #2271b1;
 }
 
-.mf-btn-primary:hover {
+.mf-btn-primary:hover,
+.mf-btn-primary:focus {
   background: #135e96;
+  color: #fff;
 }
 
 .mf-btn-secondary {
   background: #dba617;
 }
 
-.mf-btn-secondary:hover {
+.mf-btn-secondary:hover,
+.mf-btn-secondary:focus {
   background: #c08c0b;
+  color: #fff;
 }
 
 .mf-btn-success {
@@ -192,6 +204,26 @@
 .mf-btn-small {
   padding: 6px 12px;
   font-size: 13px;
+}
+
+/* WordPress Default Button Alignment */
+.button,
+.button-small {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 5px;
+  vertical-align: middle;
+}
+
+.button .dashicons,
+.button-small .dashicons {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  margin: 0;
+  vertical-align: middle;
+  align-self: center;
 }
 
 .mf-btn-disabled {
@@ -436,7 +468,7 @@
 }
 
 /* ========================================
-   DAY 3 - FORM & MODAL ENHANCEMENTS
+   FORM & MODAL ENHANCEMENTS
 ======================================== */
 
 /* Form Container */
@@ -463,6 +495,14 @@
   margin-top: 30px;
   padding-top: 20px;
   border-top: 1px solid #ddd;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.mf-form-actions .mf-btn,
+.mf-form-actions a.mf-btn {
+  flex: 0 0 auto;
+  width: auto;
 }
 
 /* Image Preview */
@@ -561,6 +601,19 @@ input[type="file"]:focus {
 
 .page-title-action {
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.page-title-action .dashicons {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  margin: 0;
+  vertical-align: middle;
+  align-self: center;
 }
 
 .page-title-action:hover {
@@ -622,7 +675,7 @@ input[type="file"]:focus {
 }
 
 /* ========================================
-   DAY 4 - JADWAL (SLOT WAKTU) STYLES
+   JADWAL (SLOT WAKTU) STYLES
 ======================================== */
 
 /* Time Input Enhancement */
@@ -797,5 +850,288 @@ div[style*="background: #d1ecf1"] {
   #preview-list {
     max-height: 200px;
     font-size: 13px;
+  }
+
+  /* Dashboard Stats Grid Responsive */
+  .mf-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .mf-stat-card {
+    padding: 20px;
+  }
+
+  .mf-stat-card .value {
+    font-size: 28px;
+  }
+
+  /* Cards padding adjustment */
+  .mf-card {
+    padding: 15px;
+    margin: 15px 0;
+  }
+
+  .mf-card h2,
+  .mf-card h3 {
+    font-size: 18px;
+  }
+
+  /* Quick Actions Full Width */
+  .mf-quick-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .mf-quick-actions .mf-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Form Actions Full Width */
+  .mf-form-actions {
+    flex-direction: column;
+  }
+
+  .mf-form-actions .mf-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Form Groups */
+  .mf-form-group input[type="text"],
+  .mf-form-group input[type="number"],
+  .mf-form-group input[type="email"],
+  .mf-form-group input[type="tel"],
+  .mf-form-group input[type="date"],
+  .mf-form-group select,
+  .mf-form-group textarea {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+
+  /* Table wrapper scrollable hint */
+  .mf-table-wrapper {
+    position: relative;
+  }
+
+  /* Filter form responsive */
+  .mf-filter-form {
+    flex-direction: column;
+  }
+
+  .mf-filter-form .mf-form-group {
+    width: 100%;
+  }
+
+  /* Welcome card text */
+  .mf-welcome-card {
+    text-align: center;
+  }
+
+  .mf-welcome-card h2 {
+    font-size: 20px;
+  }
+
+  .mf-welcome-card p {
+    font-size: 14px;
+  }
+}
+
+/* ========================================
+   RESPONSIVE TABLE - MOBILE FRIENDLY
+======================================== */
+
+@media screen and (max-width: 782px) {
+  /* Keep table as table - enable horizontal scroll */
+  .mf-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 0) 20px,
+      rgba(255, 255, 255, 0) calc(100% - 20px),
+      rgba(255, 255, 255, 1) 100%
+    );
+  }
+
+  /* Add scroll shadow indicator */
+  .mf-table-wrapper::after {
+    content: "← Scroll untuk melihat lebih banyak →";
+    display: block;
+    text-align: center;
+    padding: 8px;
+    font-size: 12px;
+    color: #666;
+    background: #f9f9f9;
+    border-top: 1px solid #e0e0e0;
+    font-style: italic;
+  }
+
+  /* Ensure table maintains structure */
+  .mf-table {
+    min-width: 800px;
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  /* Make table cells more compact on mobile */
+  .mf-table thead th {
+    font-size: 12px;
+    padding: 10px 8px;
+    white-space: nowrap;
+  }
+
+  .mf-table tbody td {
+    font-size: 13px;
+    padding: 10px 8px;
+  }
+
+  /* Image thumbnail smaller on mobile */
+  .mf-table img {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  /* Make action buttons stack vertically */
+  .mf-table td:last-child {
+    min-width: 140px;
+  }
+
+  .mf-table td .mf-btn {
+    display: inline-flex;
+    margin: 3px auto;
+    font-size: 12px;
+    padding: 6px 10px;
+    width: auto;
+    max-width: 140px;
+  }
+
+  .mf-table td .mf-btn:last-child {
+    margin-bottom: 3px;
+  }
+
+  /* Override for Actions column - keep button compact */
+  .mf-table td[data-label="Actions"] {
+    text-align: center;
+    padding: 15px 10px !important;
+  }
+
+  .mf-table td[data-label="Actions"] .mf-btn,
+  .mf-table td[data-label="Actions"] .button {
+    display: inline-flex !important;
+    width: auto !important;
+    margin: 0 auto !important;
+    min-width: auto !important;
+    max-width: none !important;
+  }
+
+  /* More specific override for booking page */
+  #wpwrap .mf-table td[data-label="Actions"] .mf-btn {
+    display: inline-flex !important;
+    width: auto !important;
+    min-width: auto !important;
+  }
+
+  /* Badge styling - more compact */
+  .mf-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  /* ========================================
+     FORM RESPONSIVE - MOBILE FRIENDLY
+  ======================================== */
+
+  /* Form container responsive */
+  .mf-form-container {
+    padding: 15px;
+  }
+
+  .mf-form-container h2 {
+    font-size: 18px;
+  }
+
+  /* Form groups - full width on mobile */
+  .mf-form-group input[type="text"],
+  .mf-form-group input[type="number"],
+  .mf-form-group input[type="time"],
+  .mf-form-group input[type="date"],
+  .mf-form-group input[type="tel"],
+  .mf-form-group input[type="email"],
+  .mf-form-group select,
+  .mf-form-group textarea,
+  .mf-form-group input[type="file"] {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  /* Form actions - stack on mobile */
+  .mf-form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mf-form-actions .mf-btn,
+  .mf-form-actions a {
+    width: 100%;
+    justify-content: center;
+    text-decoration: none !important;
+    outline: none;
+  }
+
+  .mf-form-actions .mf-btn:focus,
+  .mf-form-actions .mf-btn:active,
+  .mf-form-actions a:focus,
+  .mf-form-actions a:active {
+    outline: none;
+    text-decoration: none !important;
+  }
+
+  /* Image preview responsive */
+  .mf-image-preview img {
+    max-width: 100%;
+    height: auto !important;
+  }
+
+  /* Card padding responsive */
+  .mf-card {
+    padding: 15px;
+  }
+
+  .mf-card h2,
+  .mf-card h3 {
+    font-size: 16px;
+  }
+
+  /* Page title button responsive */
+  .page-title-action {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
+}
+
+/* Tablet view - slightly larger */
+@media screen and (min-width: 783px) and (max-width: 1024px) {
+  .mf-table th,
+  .mf-table td {
+    font-size: 13px;
+    padding: 10px 8px;
+  }
+
+  .mf-btn-small {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .mf-btn-small .dashicons {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
   }
 }
