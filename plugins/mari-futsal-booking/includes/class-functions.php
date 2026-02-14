@@ -472,7 +472,7 @@ class MF_Functions {
     }
 
     // ========================================
-    // JADWAL (SLOT WAKTU) FUNCTIONS - Day 4
+    // JADWAL (SLOT WAKTU) FUNCTIONS
     // ========================================
 
     /**
