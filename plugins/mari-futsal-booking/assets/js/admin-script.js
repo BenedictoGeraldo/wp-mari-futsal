@@ -5,9 +5,6 @@
 jQuery(document).ready(function ($) {
   "use strict";
 
-  console.log("Mari Futsal Admin Script");
-  console.log("AJAX URL:", mfAjax.ajaxurl);
-
   $(document).on("click", ".mf-delete-btn", function (e) {
     const itemName = $(this).data("item-name") || "data ini";
     const confirmMsg = `Apakah  anda yakin ingin menghapus ${itemName}?\n\nTindakan ini tidak dapat dibatalkan!`;
@@ -189,7 +186,7 @@ jQuery(document).ready(function ($) {
   );
 
   // ========================================
-  // TOGGLE FORM ADD/EDIT LAPANGAN (Day 3)
+  // TOGGLE FORM ADD/EDIT LAPANGAN
   // ========================================
   $("#btn-toggle-form").on("click", function () {
     const formContainer = $("#form-container");
@@ -224,7 +221,7 @@ jQuery(document).ready(function ($) {
   });
 
   // ========================================
-  // FORMAT HARGA REAL-TIME (Day 3)
+  // FORMAT HARGA REAL-TIME
   // ========================================
   $("#harga").on("input", function () {
     const value = $(this).val();
@@ -239,7 +236,7 @@ jQuery(document).ready(function ($) {
   });
 
   // ========================================
-  // ENHANCED DELETE CONFIRMATION (Day 3)
+  // ENHANCED DELETE CONFIRMATION
   // ========================================
   $(document).on("click", ".mf-delete-btn", function (e) {
     e.preventDefault();
@@ -269,7 +266,7 @@ jQuery(document).ready(function ($) {
   });
 
   // ========================================
-  // IMAGE PREVIEW ENHANCEMENT (Day 3)
+  // IMAGE PREVIEW ENHANCEMENT
   // ========================================
   $(document).on("change", "#foto", function (e) {
     const file = e.target.files[0];
@@ -316,12 +313,12 @@ jQuery(document).ready(function ($) {
   });
 
   // ========================================
-  // FORM CANCEL BUTTON (Day 3)
+  // FORM CANCEL BUTTON
   // ========================================
   // Already handled by link, no additional JS needed
 
   // ========================================
-  // AUTO SCROLL TO FORM IF EDIT MODE (Day 3)
+  // AUTO SCROLL TO FORM IF EDIT MODE
   // ========================================
   if ($("#form-container").is(":visible")) {
     // Edit mode detected
@@ -338,7 +335,7 @@ jQuery(document).ready(function ($) {
   }
 
   // ========================================
-  // PREVENT DOUBLE SUBMIT (Day 3)
+  // PREVENT DOUBLE SUBMIT
   // ========================================
   $(".mf-form").on("submit", function () {
     const submitBtn = $(this).find('button[type="submit"]');
@@ -364,7 +361,7 @@ jQuery(document).ready(function ($) {
   });
 
   // ========================================
-  // DAY 4 - JADWAL (SLOT WAKTU) FEATURES
+  // JADWAL (SLOT WAKTU) FEATURES
   // ========================================
 
   // Time Input Validation - Real-time feedback
@@ -437,6 +434,4 @@ jQuery(document).ready(function ($) {
       }
     }, 100);
   });
-
-  console.log("✅ Mari Futsal Admin Script initialized (Day 4 - Jadwal)");
 });
